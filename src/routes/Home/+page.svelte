@@ -4,7 +4,7 @@
   let flightPaths = [];
   
   onMount(async () => {
-    const response = await fetch('/api/flightPaths');
+    const response = await fetch('/api/flightPath');
     flightPaths = await response.json();
 
 
@@ -72,6 +72,4 @@
 
 
 <!-- TODO: Install tailwind -->
-<!-- TODO: Fix the folder structure -->
-<!-- TODO: Create a GitHub repository and commit codes-->
 <!-- TODO: Check if the data is saved in MongoDB or fix data saving issue in MongoDB -->
