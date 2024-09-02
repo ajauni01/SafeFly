@@ -3,7 +3,7 @@
     import {page} from '$app/stores'
 </script>
 
-<NavBar/>
+<!-- <NavBar/> -->
 {#key $page.url.pathname}
 <slot/>
 {/key}
