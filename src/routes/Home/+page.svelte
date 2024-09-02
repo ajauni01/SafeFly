@@ -1,12 +1,20 @@
 <script>
   import { onMount } from 'svelte';
+  import { flightData } from '$lib/index.js';
+
+  let flights = [];
+
+  async function fetchFlightData() {
+    const data = await flightData();
+    flights = data?.flights?.data; // Store the flight data
+    console.log('Flight data fetched:', flights);
+  }
 
   onMount(async () => {
+    await fetchFlightData();
     const Map = (await import('@arcgis/core/Map')).default;
-    const LineSymbol3D = (await import('@arcgis/core/symbols/LineSymbol3D.js')).default;
     const Graphic = (await import('@arcgis/core/Graphic.js')).default;
     const MapView = (await import('@arcgis/core/views/MapView')).default;
-    const SceneView = (await import('@arcgis/core/views/SceneView')).default;
     const GraphicsLayer = (await import('@arcgis/core/layers/GraphicsLayer.js')).default;
     const Polyline = (await import('@arcgis/core/geometry/Polyline.js')).default;
     const Extent = (await import('@arcgis/core/geometry/Extent')).default;
@@ -18,11 +26,10 @@
     });
 
     const view = new MapView({
-          container: "viewDiv",
-          map: map,
-          zoom: 0,
-          
-        });
+      container: "viewDiv",
+      map: map,
+      zoom: 0,
+    });
 
     // Create a GraphicsLayer to hold the flight path
     const graphicsLayer = new GraphicsLayer();
@@ -44,13 +51,36 @@
         color: [0, 255, 255], // Cyan color for the flight path
         width: 10,            // Adjusted width for better visibility
         style: "dash"
+      },
+
+      popupTemplate: {
+         title: "🚀 Jetting from JFK to DAC: No Direct Flight? No Problem! We'll Stop by Doha!",
+        content: (feature) => {
+          if (flights.length === 0) {
+            return "<p>No flight data available. Please try again later.</p>";
+          }
+
+          let content = '<h4>Available Flights:</h4><ul>';
+          
+          // Add flight details for each flight
+          flights.forEach(flight => {
+            content += `
+              <li>
+                <strong>Flight:</strong> ${flight.flight.iata} (${flight.airline.name})<br>
+                <strong>Departure:</strong> ${flight.departure.airport} - ${new Date(flight.departure.scheduled).toLocaleString()}<br>
+                <strong>Arrival:</strong> ${flight.arrival.airport} - ${new Date(flight.arrival.scheduled).toLocaleString()}<br>
+              </li>
+            `;
+          });
+
+          content += '</ul>';
+          return content;
+        }
       }
     });
 
     // Add the flight path to the graphics layer
     graphicsLayer.add(flightPathGraphic);
-
-
 
     // Fit the view to the flight path
     const extent = new Extent({
@@ -78,6 +108,3 @@
     min-height: 100vh;
   }
 </style>
-
-<!-- TODO: Investigate why the graphics line is not showing -->
-<!-- TODO: Show the name of the countries and name of the places when zooming in / featureLayer -->
