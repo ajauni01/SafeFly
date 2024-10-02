@@ -20,9 +20,6 @@ SafeFly allows users to input dynamic airport selections and visualizes flight p
 - **Dynamic Weather Integration** (upcoming): Real-time weather along the flight route.
 - **Esri Geocoding** (upcoming): Enhancing airport selection and precision.
 
-## Why Esri?
-
-As I apply for the **Esri Software Development Engineer internship**, SafeFly showcases my hands-on experience with Esri's APIs and tools. Through this project, I am demonstrating my ability to leverage Esri's technology to build dynamic, data-driven applications, reinforcing my commitment to innovative geospatial solutions.
 
 ## Development
 
@@ -34,3 +31,4 @@ npm install
 
 # Start the development server
 npm run dev -- --open
+Stay tuned for frequent updates as I continue pushing new features to this project!
