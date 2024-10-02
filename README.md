@@ -31,4 +31,4 @@ npm install
 
 # Start the development server
 npm run dev -- --open
-Stay tuned for frequent updates as I continue pushing new features to this project!
+
